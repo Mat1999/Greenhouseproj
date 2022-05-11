@@ -20,9 +20,17 @@ namespace Greenhouseproj
     /// </summary>
     public partial class MainWindow : Window
     {
+        Controller controllerModule;
         public MainWindow()
         {
             InitializeComponent();
+            
+        }
+
+        private void btnConnect_Click(object sender, RoutedEventArgs e)
+        {
+            controllerModule = new Controller();
+            txbTeszt.Text = controllerModule.TesztReturn();
         }
     }
 }
