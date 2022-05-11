@@ -7,15 +7,20 @@ namespace Greenhouseproj
 {
     class Controller
     {
-        GreenHouseList green1490;
+        public GreenHouseList green1490 { get; set; }
 
         public Controller()
         {
             Loader greenLoader = new Loader();
             green1490 = greenLoader.loadGreenHouses();
-            MessageBox.Show(green1490.greenhouseList[0].ghId + ", " + green1490.greenhouseList[0].description, "Áh");
         }
 
-        
+        public int MonitorAndControlHouse(string greenHouseId, out SensorData actData)
+        {
+            Monitor greenMonitor = new Monitor();
+            SensorData actualData = greenMonitor.getSensorData(greenHouseId);
+            actData = actualData;
+            return 0;
+        }
     }
 }

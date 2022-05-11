@@ -11,7 +11,9 @@
             <ColumnDefinition Width="7*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" x:Name="txbTeszt"/>
-        <Button Grid.Column="1" x:Name="btnConnect" Content="Kapcsolódás" Click="btnConnect_Click"/>
+        <TabControl Grid.Column="0" x:Name="tbcDataDisplay">
+            
+        </TabControl>
+            <Button Grid.Column="1" x:Name="btnConnect" Content="Kapcsolódás" Click="btnConnect_Click"/>
     </Grid>
 </Window>
