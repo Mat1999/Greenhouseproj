@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace Greenhouseproj
 {
@@ -11,13 +12,10 @@ namespace Greenhouseproj
         public Controller()
         {
             Loader greenLoader = new Loader();
-            //green1490 = greenLoader.loadGreenHouses();
+            green1490 = greenLoader.loadGreenHouses();
+            MessageBox.Show(green1490.greenhouseList[0].ghId + ", " + green1490.greenhouseList[0].description, "Áh");
         }
 
-        public string TesztReturn()
-        {
-            Loader greenLoader = new Loader();
-            return greenLoader.Teszt();
-        }
+        
     }
 }

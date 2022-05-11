@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Greenhouseproj
 {
@@ -15,17 +16,9 @@ namespace Greenhouseproj
             string responseJson;
             var taskString = loaderClient.GetStringAsync("http://193.6.19.58:8181/greenhouse");
             responseJson = taskString.Result;
-            return new GreenHouseList();
+            GreenHouseList result = JsonConvert.DeserializeObject<GreenHouseList>(responseJson);
+            return result;
         }
-
-        public string Teszt()
-        {
-            string responseJson;
-            var taskString = loaderClient.GetStringAsync("http://193.6.19.58:8181/greenhouse");
-            responseJson = taskString.Result;
-            return responseJson;
-        }
-
 
         public Loader()
         {

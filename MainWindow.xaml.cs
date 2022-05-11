@@ -30,7 +30,6 @@ namespace Greenhouseproj
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
             controllerModule = new Controller();
-            txbTeszt.Text = controllerModule.TesztReturn();
         }
     }
 }
