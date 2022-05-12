@@ -8,12 +8,23 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <TabControl Grid.Column="0" x:Name="tbcDataDisplay">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" x:Name="tbcDataDisplay">
             
         </TabControl>
-            <Button Grid.Column="1" x:Name="btnConnect" Content="Kapcsolódás" Click="btnConnect_Click"/>
+        <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Run Text="Frissítés"/>
+            <LineBreak/>
+            <Run Text="gyakorisága (s)"/>
+        </TextBlock>
+        <TextBox Grid.Column="1" Grid.Row="1" x:Name="txbRefreshRate" Text="30"/>
+        <Button Grid.Column="1" Grid.Row="2" x:Name="btnConnect" Content="Kapcsolódás" Click="btnConnect_Click"/>
     </Grid>
 </Window>
