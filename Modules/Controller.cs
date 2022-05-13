@@ -30,7 +30,7 @@ namespace Greenhouseproj
             if (!actualData.boiler_on && !actualData.sprinkler_on)
             {
                 boilerNumber = CalculateBoiler(actualData.temperature_act, greenHouse.temperature_min, greenHouse.temperature_opt, out boilerError);
-                sprinklerNumber = CalculateSprinkler(actualData.humidity_act, actualData.temperature_act, boilerNumber,greenHouse.humidity_min, greenHouse.volume, out sprinklerError);
+                sprinklerNumber = CalculateSprinkler(actualData.humidity_act, actualData.temperature_act, greenHouse.temperature_opt ,boilerNumber,greenHouse.humidity_min, greenHouse.volume, out sprinklerError);
             }
             if (boilerError || sprinklerError)
             {
@@ -64,17 +64,21 @@ namespace Greenhouseproj
                 }
                 rightTemp = optTemp - actualTemp;
             }
+            else
+            {
+                rightTemp = 0.0001;
+            }
             return rightTemp;
         }
 
         //1,2   1,4    1,6
-        private double CalculateSprinkler(double actualHum, double actTemp, double commandTemp ,int minHum, int houseVolume, out bool error)
+        private double CalculateSprinkler(double actualHum, double actTemp, int optTemp ,double commandTemp ,int minHum, int houseVolume, out bool error)
         {
             error = false;
             int flooredTemp = (int)Math.Floor(actTemp);
             double waterToSprink = 0.0;
             double maxHum = 40.0;
-            if (commandTemp == 0.0)
+            if (commandTemp == 0.0 || commandTemp == 0.0001)
             {
                 if (actualHum < minHum) {
                     double targetHum;
@@ -94,12 +98,12 @@ namespace Greenhouseproj
                     }
                     targetHum = maxHum * (minHum * 0.01);
                     currentAirHum = maxHum * (actualHum * 0.01);
-                    waterToSprink = (targetHum - currentAirHum) * 100 * houseVolume;
+                    waterToSprink = (targetHum - currentAirHum) / 10 * houseVolume;
                 }
             }
             else
             {
-                int newTemp = (int)Math.Floor(actTemp + commandTemp);
+                int newTemp = optTemp;
                 double maxHumAct = 0.0;
                 double currentWaterMass = 0.0;
                 if (actTemp >= 20.00 && actTemp < 26.00)
@@ -131,7 +135,11 @@ namespace Greenhouseproj
                 double targetMinMass = maxHum * (minHum * 0.01) * houseVolume;
                 if (currentWaterMass < targetMinMass)
                 {
-                    waterToSprink = (targetMinMass - currentWaterMass) * 100;
+                    waterToSprink = (targetMinMass - currentWaterMass) / 10 ;
+                }
+                else
+                {
+                    waterToSprink = 0.0001;
                 }
 
             }

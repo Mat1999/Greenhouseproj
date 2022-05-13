@@ -19,6 +19,10 @@ namespace Greenhouseproj
             {
                 commandToSend.boilerCommand = "";
             }
+            else if(boilerValue == 0.0001)
+            {
+                commandToSend.boilerCommand = "bup0c";
+            }
             else
             {
                 commandToSend.boilerCommand = "bup" + Math.Round(boilerValue).ToString() + "c";
@@ -27,10 +31,23 @@ namespace Greenhouseproj
             {
                 commandToSend.sprinklerCommand = "";
             }
+            else if(sprinklerValue == 0.0001)
+            {
+                commandToSend.sprinklerCommand = "son0l";
+            }
             else
             {
-                commandToSend.sprinklerCommand = "son" + Math.Round(sprinklerValue).ToString() + "l";
+                double checkDec = sprinklerValue - Math.Floor(sprinklerValue);
+                //if (checkDec > 0.5)
+                {
+                    commandToSend.sprinklerCommand = "son" + Math.Round(sprinklerValue).ToString() + "l";
+                }
+                /*else
+                {
+                    commandToSend.sprinklerCommand = "son" + Math.Floor(sprinklerValue).ToString() + "l";
+                }*/
             }
+           
             StringContent messageContent = new StringContent(commandToSend.ToString());
             messageContent.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
             var response = driverClient.PostAsync(destinationUrl, messageContent).Result.Content.ReadAsStringAsync().Result;
