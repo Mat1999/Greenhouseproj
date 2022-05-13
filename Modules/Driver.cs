@@ -21,11 +21,15 @@ namespace Greenhouseproj
             }
             else
             {
-                commandToSend.boilerCommand = "bup" + Math.Ceiling(boilerValue).ToString() + "c";
+                commandToSend.boilerCommand = "bup" + Math.Round(boilerValue).ToString() + "c";
             }
             if (sprinklerValue == 0.0)
             {
                 commandToSend.sprinklerCommand = "";
+            }
+            else
+            {
+                commandToSend.sprinklerCommand = "son" + Math.Round(sprinklerValue).ToString() + "l";
             }
             StringContent messageContent = new StringContent(commandToSend.ToString());
             messageContent.Headers.ContentType = new MediaTypeHeaderValue("text/plain");

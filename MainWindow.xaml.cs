@@ -24,6 +24,7 @@ namespace Greenhouseproj
         Controller controllerModule;
         int refreshSecs;
         Dictionary<int, string> dictErrorCode;
+        public static bool serviceOn;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +37,7 @@ namespace Greenhouseproj
             dictErrorCode[105] = "Az üzenetben lévő token nem érvényes!";
             dictErrorCode[106] = "Az üzenetben szereplő üvegház nem található!";
             dictErrorCode[107] = "Általános üzenet feldolgozási hiba!";
+            serviceOn = false;
         }
 
         private void btnConnect_Click(object sender, RoutedEventArgs e)
@@ -46,6 +48,8 @@ namespace Greenhouseproj
                 controllerModule = new Controller();
                 if (controllerModule.green1490.greenhouseList != null)
                 {
+                    tbcDataDisplay.Items.Clear();
+                    serviceOn = true;
                     foreach (Greenhouse gHouse in controllerModule.green1490.greenhouseList)
                     {
                         AddTabItemToHouse(gHouse);
@@ -66,8 +70,7 @@ namespace Greenhouseproj
             Greenhouse liveHouse = (Greenhouse)greenHouseParam;
             string greenHouseID = liveHouse.ghId;
             SensorData actualData = new SensorData();
-            int serviceOn = 0;
-            while (serviceOn == 0)
+            while (serviceOn)
             {
                 int result = controllerModule.MonitorAndControlHouse(liveHouse, out actualData);
                     this.Dispatcher.Invoke(() =>
@@ -143,6 +146,11 @@ namespace Greenhouseproj
             newTabItem.RegisterName(tabGrid.Name, tabGrid);
             tabGrid.RegisterName(actualDataField.Name, actualDataField);
 
+        }
+
+        private void btnDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+            serviceOn = false;
         }
     }
 }

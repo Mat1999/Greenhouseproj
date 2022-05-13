@@ -25,6 +25,14 @@
             <Run Text="gyakorisága (s)"/>
         </TextBlock>
         <TextBox Grid.Column="1" Grid.Row="1" x:Name="txbRefreshRate" Text="30"/>
-        <Button Grid.Column="1" Grid.Row="2" x:Name="btnConnect" Content="Kapcsolódás" Click="btnConnect_Click"/>
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" x:Name="btnConnect" Content="Kapcsolódás" Click="btnConnect_Click"/>
+            <Button Grid.Row="1" x:Name="btnDisconnect" Content="Leállítás" Click="btnDisconnect_Click"/>
+        </Grid>
+            
     </Grid>
 </Window>
