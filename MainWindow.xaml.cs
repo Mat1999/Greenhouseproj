@@ -23,10 +23,19 @@ namespace Greenhouseproj
     {
         Controller controllerModule;
         int refreshSecs;
+        Dictionary<int, string> dictErrorCode;
         public MainWindow()
         {
             InitializeComponent();
-            
+            dictErrorCode = new Dictionary<int, string>();
+            dictErrorCode[100] = "A parancs végrehajtásra került!";
+            dictErrorCode[101] = "Hibás kalkuláció!";
+            dictErrorCode[102] = "Parancs került kiküldésre egy éppen parancsot végrehajtó eszköznek!";
+            dictErrorCode[103] = "Hibás parancs került kiküldésre a kazánnak!";
+            dictErrorCode[104] = "Hibás parancs került kiküldésre a locsolónak!";
+            dictErrorCode[105] = "Az üzenetben lévő token nem érvényes!";
+            dictErrorCode[106] = "Az üzenetben szereplő üvegház nem található!";
+            dictErrorCode[107] = "Általános üzenet feldolgozási hiba!";
         }
 
         private void btnConnect_Click(object sender, RoutedEventArgs e)
@@ -42,7 +51,7 @@ namespace Greenhouseproj
                         AddTabItemToHouse(gHouse);
                         Thread monitorThread = new Thread(new ParameterizedThreadStart(LiveServiceForHouse));
                         monitorThread.IsBackground = true;
-                        monitorThread.Start(gHouse.ghId);
+                        monitorThread.Start(gHouse);
                     }
                 }
             }
@@ -52,16 +61,15 @@ namespace Greenhouseproj
             }
         }
 
-        private void LiveServiceForHouse(object greenHouseIDparam)
+        private void LiveServiceForHouse(object greenHouseParam)
         {
-            string greenHouseID = (string)greenHouseIDparam;
-            SensorData actualData = new SensorData() ;
-            int result = 0;
-            while (result == 0)
+            Greenhouse liveHouse = (Greenhouse)greenHouseParam;
+            string greenHouseID = liveHouse.ghId;
+            SensorData actualData = new SensorData();
+            int serviceOn = 0;
+            while (serviceOn == 0)
             {
-                result = controllerModule.MonitorAndControlHouse(greenHouseID, out actualData);
-                if (result == 0)
-                {
+                int result = controllerModule.MonitorAndControlHouse(liveHouse, out actualData);
                     this.Dispatcher.Invoke(() =>
                     {
                         
@@ -79,13 +87,20 @@ namespace Greenhouseproj
                                         + "Aktuális hőmérséklet: " + actualData.temperature_act.ToString() + "\n"
                                         + "Aktuális páratartalom: " + actualData.humidity_act.ToString() + "\n"
                                         + "Locsoló bekapcsolva: " + actualData.sprinkler_on.ToString() + "\n"
-                                        + "Bojler bekapcsolva: " + actualData.boiler_on.ToString();
+                                        + "Bojler bekapcsolva: " + actualData.boiler_on.ToString() + "\n";
+                                    try
+                                    {
+                                        refreshText.Text += "Válasz a szervertől: " + dictErrorCode[result];
+                                    }
+                                    catch
+                                    {
+                                        refreshText.Text += "Válasz a szervertől: " + result.ToString();
+                                    }
                                 }
                             }
                         }
                                                                         
                     });
-                }
                 Thread.Sleep(TimeSpan.FromSeconds(refreshSecs));
             }
         }
